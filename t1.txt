@@ -1,0 +1,6 @@
+
+Elekta-Neuromag analysis software location is : /space/orsay/8/megdev/megsw-neuromag
+
+/space/orsay/8/megdev/megsw-neuromag/bin/X11 already in PATH
+/space/orsay/8/megdev/megsw-neuromag/bin/util already in PATH
+
