@@ -19,7 +19,7 @@ label_names={'superiortemporal_1-lh.label'};
 tt=load([sim_dir 'nperm' num2str(nperm) '_sim_cluster3D_' tag '_seed_' label_names{1}(1:end-6) '_nomedialwall.mat']);
 %/cluster/transcend/fahimeh/fmm/resources/Simulations2/var_jitter/nperm200_sim_cluster3D_10_0.5_10_0.5_nr_1_snr_1_templ_tempr_3sub_jitter_15to20f_8subj_stg9parts_seed_superiortemporal_1-lh_nomedialwall.mat
 
-num=3;
+num=2;
 mask=squeeze(sum(tt.stats.posclus(num).mask));
 fs=600;
 time=-0.25:1/fs:.75;

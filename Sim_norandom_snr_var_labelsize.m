@@ -14,7 +14,7 @@ subs=[1 2 3 4 5];
 %snr=[0.1 0.06 .03];
 %snr=[1 0.1 0.09 .08 .07 0.06 .05 .04 0.03];
 %snr=[0.1 0.07 0.06 .05 .04 0.03];
-snr=0.05;
+snr=0.1;
 
 
 sim_dir='/autofs/cluster/transcend/fahimeh/fmm/resources/Simulations2/labelsize_var/';
@@ -27,12 +27,12 @@ X{2} =[0     0;0    0];
 
 flagrest=2;
 
-POOL=parpool('local',6);
+%POOL=parpool('local',6);
 
-rate=0.05;
+rate=0.4;
 nPerm_s=500;
 
-for iparts=1:5
+for iparts=3:3
     
     k=1;
     all_label=cell(1);
@@ -69,7 +69,7 @@ for iparts=1:5
         issptial_var.save_sensor=1;
         issptial_var.do = 0;
         
-          simulation_coh_func_norandomness(sim_dir,label_names,all_label,all_label1,all_label2,label1,noiseLevelr,specific_tag,SNR,labeldir_tag, issptial_var)
+     %     simulation_coh_func_norandomness(sim_dir,label_names,all_label,all_label1,all_label2,label1,noiseLevelr,specific_tag,SNR,labeldir_tag, issptial_var)
         
         %% statistics
         
@@ -79,7 +79,7 @@ for iparts=1:5
         
       %   cluster_coh_eval(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR)
         
-   %   cluster_coh_fdr(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR,rate)
+      cluster_coh_fdr(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR,rate)
       
     %    compute_permutation_pvalue(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
         
