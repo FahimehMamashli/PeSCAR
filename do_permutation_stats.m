@@ -75,7 +75,7 @@ sig_matrix_cond2_Allfreq_p=zeros(nPerm_s,length(temporal),length(frontal));
 
 L=size(cond{1}.data_subj,1);
 
-nperm=500;
+nperm=250;
 statsmethod='pairedttest';
 ALPHA=0.05;
 

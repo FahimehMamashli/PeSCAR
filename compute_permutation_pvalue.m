@@ -1,4 +1,4 @@
-function compute_permutation_pvalue(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
+function p_value_Allfreq_cond1=compute_permutation_pvalue(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
 
 
 
@@ -33,7 +33,7 @@ load([sim_dir 'permutations/permutation_' tag1 '_' tag2 '_nPerm_s' num2str(nPerm
 
 fprintf('%s SNR %s',specific_tag,num2str(SNR))
 
-p_value_Allfreq_cond1=(sum(sum(sum(abs(sig_matrix_cond1_Allfreq_p(:,:,:)),3),2)>=sum(sum(abs(sig_matrix_cond1_Allfreq),2)))+1)/(size(sig_matrix_cond1_Allfreq_p(:,:,:),1)+1)
+p_value_Allfreq_cond1=2*(sum(sum(sum(abs(sig_matrix_cond1_Allfreq_p(:,:,:)),3),2)>=sum(sum(abs(sig_matrix_cond1_Allfreq),2)))+1)/(size(sig_matrix_cond1_Allfreq_p(:,:,:),1)+1)
 
 figure;
 imagesc(sig_matrix_cond1_Allfreq);axis xy;colorbar;

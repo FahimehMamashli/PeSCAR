@@ -1,4 +1,4 @@
-function [tag, FREQ, fs] = simulation_coh_func_norandom_clustercompar(sim_dir,label_names,label1,noiseLevelr,specific_tag,SNR,labeldir_tag,issptial_var)
+function [tag, FREQ, fs] = simulation_coh_func_norandom_clustercompar_2(sim_dir,label_names,label1,noiseLevelr,specific_tag,SNR,labeldir_tag,issptial_var)
 
 addpath /autofs/cluster/transcend/scripts/MEG/Matlab_scripts/freesurfer/
 addpath /autofs/cluster/transcend/scripts/MEG/Matlab_scripts/core_scripts/
@@ -26,6 +26,7 @@ jitter_noise(2,:)=[0 0];
 freq=15:20;
 varAcrossFreq=rand(length(freq),1);
 
+alllabel=label_names;
 
 for isubj=1:8
     
@@ -40,12 +41,44 @@ for isubj=1:8
         
         clear label_names;               
         
-        tt= load([sim_dir 'subIndex_subj_' num2str(isubj) '_discR_randLstg.mat']);
+%         tt= load([sim_dir 'subIndex_subj_' num2str(isubj) '_discR_randLstg.mat']);
+%         
+%         label_names = tt.label_names;
+
+label_names = alllabel;
         
-        label_names = tt.label_names;
+        if issptial_var.random == 1
+            indsub1=randperm(issptial_var.parts(issptial_var.iparts));
+            indsub1 = indsub1(1:issptial_var.sub_num);
+            
+            indsub2=randperm(issptial_var.parts(issptial_var.iparts));
+            indsub2 = indsub2(1:issptial_var.sub_num)+issptial_var.parts(issptial_var.iparts);
+            
+            indsub = [indsub1 indsub2];
+        end
+        
+        if issptial_var.discont == 1
+            
+            % left STG random sub-ROI
+            indsub1=randperm(issptial_var.parts(issptial_var.iparts));
+            indsub1 = indsub1(1:issptial_var.sub_num);
+            % right STG: discontinous sub-ROI
+            var_subj = [1 2;2 2;3 2;4 2;5 2;1 3;2 3;3 3];
+            
+            indsub2=var_subj(isubj,1):var_subj(isubj,2):issptial_var.parts(issptial_var.iparts);
+            indsub2 = indsub2(1:issptial_var.sub_num)+issptial_var.parts(issptial_var.iparts);
+            
+            indsub = [indsub1 indsub2];
+            
+            
+            
+        end
+        
+        label_names = label_names(indsub);
         
     end
     
+    save([sim_dir 'sub_inds_subj' num2str(isubj) specific_tag '.mat'],'label_names','indsub')
     
     subj=subjects{isubj};
     

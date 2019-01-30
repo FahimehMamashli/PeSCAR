@@ -34,7 +34,7 @@ for icond=1:2
             
             [stc_lh,stc_rh]=removeMedialWall(stc_lh,stc_rh);
             
-            nfs=round(fs/2);
+            nfs=round(fs/6);
             fs=round(fs);
             
             lh=resample(stc_lh.data(:,50:550)',nfs,fs);
@@ -79,3 +79,5 @@ stats=clustterstat3D(G1,G2,cfg1);
 toc
 
 save([sim_dir 'nperm' num2str(cfg1.numperm) '_sim_cluster3D_' tag{1} '_seed_' label_names{1}(1:end-6) '_nomedialwall.mat'],'stats','-v7.3','FREQ')
+
+clear G G1 G2

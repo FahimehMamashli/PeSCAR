@@ -158,12 +158,18 @@ for isubj=1:8
     end
     
     indperm=randperm(100);
+    indperm2=randperm(100);
+    
     
     for icond=1:2
         
         indp=indperm((icond-1)*nEpochs+1:nEpochs*icond);
         
         restd=rest(:,:,indp);
+        
+        indp2=indperm2((icond-1)*nEpochs+1:nEpochs*icond);
+        
+        restd2=rest(:,:,indp2);
         
         
         
@@ -202,8 +208,8 @@ for isubj=1:8
             data_cortex=fwd.sol.data*cortex1;
             data_cortex=reshape(data_cortex,306,nTime,nEpochs);
             
-            d1=abs(SNR*data_cortex);
-            d2=abs(restd/noiseLevelr);
+            d1=abs(SNR*data_cortex+noiseLevelr*restd2);
+            d2=abs(restd);
             snr=median(d1(d1~=0))/median(median(median(d2)));
             snr_t=median(d1(d1~=0))/median(d2(d2~=0));
             
@@ -217,7 +223,8 @@ for isubj=1:8
         
         fprintf('no rest added')
         
-        epoch_data=SNR*data_cortex+restd/noiseLevelr;
+       % epoch_data=SNR*data_cortex+restd/noiseLevelr;
+        epoch_data=SNR*data_cortex+noiseLevelr*restd2+restd;
         
         
         %         if SNR==1

@@ -8,13 +8,13 @@ addpath /autofs/cluster/transcend/fahimeh/fm_functions/Mines/
 % subs=[1 2 3 4 5];
 
 parts=[5 7 9 11 13];
-subs=[1 2 3 4 5];
+subs=[1 2 3 3 4];
 
 
 %snr=[0.1 0.06 .03];
 %snr=[1 0.1 0.09 .08 .07 0.06 .05 .04 0.03];
-%snr=[1 0.1 .08 0.06 .04 0.03];
-snr=0.04;
+%snr=[0.06 .05 .04 0.03];
+snr=0.05;
 
 
 sim_dir='/autofs/cluster/transcend/fahimeh/fmm/resources/Simulations2/labelsize_var/';
@@ -27,13 +27,12 @@ X{2} =[0     0;0    0];
 
 flagrest=2;
 
-% POOL=parpool('local',12);
+% POOL=parpool('local',20);
 
-
+rate=0.05;
 nPerm_s=500;
-rate=0.1;
 
-for iparts=4:4
+for iparts=5:5
     
     k=1;
     all_label=cell(1);
@@ -67,20 +66,24 @@ for iparts=4:4
         
         SNR=snr(isnr);
         
-        %   simulation_coh_func_norandomness(sim_dir,label_names,all_label,all_label1,all_label2,label1,noiseLevelr,specific_tag,SNR,labeldir_tag)
+        issptial_var.save_sensor=0;
+        issptial_var.do = 0;
+        
+%           simulation_coh_func_norandomness(sim_dir,label_names,all_label,all_label1,all_label2,label1,noiseLevelr,specific_tag,SNR,labeldir_tag, issptial_var)
         
         %% statistics
         
-        %    do_sim_stats(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR)
+%             do_sim_stats(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR)
         
-        % do_permutation_stats(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
+%         do_permutation_stats(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
         
-           cluster_coh_eval(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR)
+          cluster_coh_eval(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR)
         
-        %cluster_coh_fdr(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR,rate)
+     %[h, crit_p, adj_ci_cvrg, adj_p]= cluster_coh_fdr(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR,rate)
+      
+        compute_permutation_pvalue(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
         
-      %  compute_permutation_pvalue(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
-        
+    
         
     end
     

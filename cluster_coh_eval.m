@@ -1,4 +1,4 @@
-function cluster_coh_eval(temporal,frontal,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR)
+function [keep_it,count_box]=cluster_coh_eval(temporal,frontal,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR,cfg)
 
 pos=zeros(length(temporal),length(frontal));
 neg=zeros(length(temporal),length(frontal));
@@ -82,12 +82,30 @@ for iLabel1=1:length(temporal)
 end
 
 
+
+count_box=sum(sum(pos~=0));
+keep_it=0;
+
+doit=0;
+
+if doit==1
+
+if sum(sum(pos~=0))/(size(pos,1)*size(pos,2))<0.2 && sum(sum(pos~=0))/(size(pos,1)*size(pos,2))>0.13 
+   
+   keep_it=1;
+else
+    keep_it=0;
+end
+
+if cfg.plot==1
+
  cmap=colormap('jet')
  map2=cmap(32:end,:,:);
 
 figure;
 ax1=subplot(2,2,1)
-imagesc(time*1000,freq,posclus,[1 max(max(posclus))]);axis xy;colorbar
+
+imagesc(time*1000,freq,posclus,[1 20]);axis xy;colorbar
 %imagesc(time*1000,freq,posclus);axis xy;colorbar
 %;set(gca,'FontSize',18)
 % title('cond1>cond2-posclus')
@@ -101,7 +119,9 @@ imagesc(pos,[-3500 3500]);axis xy;colorbar;title('cond1>cond2-posclus')
 colormap('jet')
 
 ax2=subplot(2,2,3)
-imagesc(time*1000,freq,negclus,[1 2]);axis xy;colorbar;
+imagesc(time*1000,freq,negclus,[1 25]);axis xy;colorbar;
+%imagesc(time*1000,freq,negclus);axis xy;colorbar;
+
 %colormap(map2)
 colormap(ax2,map2)
 
@@ -114,7 +134,7 @@ imagesc(neg,[-3500 3500]);axis xy;colorbar;title('cond2>cond1-neglcus')
 %colormap(map2)
 colormap(ax3,'jet')
 %set(gca,'FontSize',18)
-% print([sim_doc 'Sigclus_' tag1 '_' tag2],'-dpdf')
+print([sim_doc 'Sigclus_' tag1 '_' tag2],'-dpdf')
 
 
 % fprintf('posclus \n')
@@ -127,5 +147,5 @@ temp_subs=temporal(find(sum(neg,2)))
 
 filename=[sim_doc 'sub_labels_' tag1 '_' tag2 '.mat'];
 save(filename,'front_subs','temp_subs')
-
-
+end
+end

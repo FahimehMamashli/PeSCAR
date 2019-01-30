@@ -1,4 +1,4 @@
-function cluster_coh_fdr(temporal,frontal,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR,rate)
+function [h, crit_p, adj_ci_cvrg, adj_p]=cluster_coh_fdr(temporal,frontal,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR,rate)
 
 pos=zeros(length(temporal),length(frontal));
 neg=zeros(length(temporal),length(frontal));
@@ -55,7 +55,7 @@ for iLabel1=1:length(temporal)
             if ~isempty(STATS.posclus)
                 
                 
-                for iclus=1:length(STATS.posclus)
+                for iclus=1:1
                     
                     pvalpos(kp)=STATS.posclus(1).pvalue;
                     kp=kp+1;
@@ -74,8 +74,10 @@ for iLabel1=1:length(temporal)
     
 end
 
+addpath addpath /autofs/cluster/transcend/fahimeh/fm_functions/fdr_bh/
 
-[num_rejected, fdr_vec, idx]=fdr_sheraz(pvalpos,rate)
+
+[h, crit_p, adj_ci_cvrg, adj_p]=fdr_bh(pvalpos,rate,'dep','yes');
 set(gca,'Linewidth',2,'Fontsize',18)
 
 title(['SNR reduced by ' num2str(1-SNR) '-corrected fdr rate ' num2str(rate)])

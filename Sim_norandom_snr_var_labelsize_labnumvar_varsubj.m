@@ -76,9 +76,9 @@ for iparts=3:3
         
         SNR=snr(isnr);
         
-        isspatial_var.save_sensor=1;
+      %  isspatial_var.save_sensor=1;
         
-        simulation_coh_func_norandomness(sim_dir,label_names,all_label,all_label1,all_label2,label1,noiseLevelr,specific_tag,SNR,labeldir_tag,isspatial_var)
+      %  simulation_coh_func_norandomness(sim_dir,label_names,all_label,all_label1,all_label2,label1,noiseLevelr,specific_tag,SNR,labeldir_tag,isspatial_var)
         
         %% statistics
         
@@ -90,6 +90,17 @@ for iparts=3:3
         
         %    compute_permutation_pvalue(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
         
+        
+%              compare_avg_coh(sim_dir,all_label1,all_label2,noiseLevelr,specific_tag,SNR)
+        
+        temporal1={['t',all_label1{1}(1:end-11),all_label1{1}(end-8:end)]};
+        temporal2={['t',all_label2{1}(1:end-11),all_label2{1}(end-8:end)]};
+        
+%         do_sim_stats_avgcoh(sim_dir,temporal1,temporal2,X,noiseLevelr,specific_tag,flagrest,SNR)
+          do_sim_plot_avgcoh(sim_dir,temporal1,temporal2,X,noiseLevelr,specific_tag,flagrest,SNR,sim_doc)
+          
+       %   cluster_coh_eval(temporal1,temporal2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR)
+      
         
     end
     

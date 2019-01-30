@@ -14,25 +14,29 @@ subs=[1 2 3 3 4];
 %snr=[0.1 0.06 .03];
 %snr=[1 0.1 0.09 .08 .07 0.06 .05 .04 0.03];
 %snr=[0.06 .05 .04 0.03];
-snr=0.044;
+%snr=0.05;
 
+% sim_dir='/autofs/cluster/transcend/fahimeh/fmm/resources/Simulations2/restvar/';
+% sim_doc='/autofs/cluster/transcend/fahimeh/fmm/doc/method_paper/Simulation/Simulation2/restvar/';
 
 sim_dir='/autofs/cluster/transcend/fahimeh/fmm/resources/Simulations2/labelsize_var/';
-sim_doc='/autofs/cluster/transcend/fahimeh/fmm/doc/method_paper/Simulation/Simulation2/SNR_var/';
+sim_doc='/autofs/cluster/transcend/fahimeh/fmm/doc/method_paper/Simulation/Simulation2/restvar/';
 
-noiseLevelr=1;
 
 X{1} =[0     0;0    0];
 X{2} =[0     0;0    0];
 
 flagrest=2;
 
-% POOL=parpool('local',7);
+ POOL=parpool('local',8);
 
 rate=0.05;
 nPerm_s=250;
 
-for iparts=3:3
+iparts=3;
+
+for i_power=22:100
+    
     
     k=1;
     all_label=cell(1);
@@ -55,38 +59,42 @@ for iparts=3:3
     all_label1=all_label(1:parts(iparts));
     all_label2=all_label(parts(iparts)+1:parts(iparts)*2);
     
-    specific_tag=['templ_tempr_' num2str(sub_num) 'sub_norand_15to20f_8subj_stg' num2str(parts(iparts)) 'parts'];
+    specific_tag=['templ_tempr_' num2str(sub_num) 'sub_norand_15to20f_8subj_stg' num2str(parts(iparts)) 'parts_Restvar_' num2str(i_power)];
     
     %%
     
     labeldir_tag=['stg' num2str(parts(iparts)) 'part/'];
     
     
-    for isnr=1:length(snr)
+   % for isnr=1:length(snr)
+                        
         
-        SNR=snr(isnr);
+        %SNR=snr(isnr);
+        
+        SNR=rand(1)/10;
+        noiseLevelr=rand(1);
+        
+        save([sim_dir 'power_analysis_' num2str(i_power) '.mat'],'SNR','noiseLevelr','specific_tag');
         
         issptial_var.save_sensor=0;
         issptial_var.do = 0;
         
-          %  simulation_coh_func_norandomness(sim_dir,label_names,all_label,all_label1,all_label2,label1,noiseLevelr,specific_tag,SNR,labeldir_tag, issptial_var)
+            simulation_coh_func_norandomness(sim_dir,label_names,all_label,all_label1,all_label2,label1,noiseLevelr,specific_tag,SNR,labeldir_tag, issptial_var)
         
         %% statistics
+                
         
+              do_sim_stats(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR)
         
-        
-         %     do_sim_stats(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR)
-        
-%          do_permutation_stats(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
+     %     do_permutation_stats(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
         
             cluster_coh_eval(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR)
         
      %[h, crit_p, adj_ci_cvrg, adj_p]= cluster_coh_fdr(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR,rate)
       
-          compute_permutation_pvalue(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
+      %    compute_permutation_pvalue(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR,nPerm_s)
+            
         
-    
-        
-    end
+   % end
     
 end

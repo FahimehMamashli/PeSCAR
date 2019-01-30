@@ -8,13 +8,13 @@ addpath /autofs/cluster/transcend/fahimeh/fm_functions/Mines/
 % subs=[1 2 3 4 5];
 
 parts=[5 7 9 11 13];
-subs=[1 2 3 4 5];
+subs=[1 2 3 3 4];
 
 
 %snr=[0.1 0.06 .03];
 %snr=[1 0.1 0.09 .08 .07 0.06 .05 .04 0.03];
-%snr=[1 0.1 .08 0.06 .04 0.03];
-snr=0.1;
+% snr=[0.06 .05 .04 0.03];
+snr=0.044;
 
 
 sim_dir='/autofs/cluster/transcend/fahimeh/fmm/resources/Simulations2/labelsize_var/';
@@ -27,9 +27,10 @@ X{2} =[0     0;0    0];
 
 flagrest=2;
 
-POOL=parpool('local',8);
+% POOL=parpool('local',8);
 
-
+rate=0.05;
+nPerm_s=500;
 
 for iparts=3:3
     
@@ -65,25 +66,28 @@ for iparts=3:3
         
         SNR=snr(isnr);
         
-         [tag, FREQ, fs] = simulation_coh_func_norandom_clustercompar(sim_dir,label_names,label1,noiseLevelr,specific_tag,SNR,labeldir_tag);
+        issptial_var.save_sensor=0;
+        issptial_var.do = 0;
         
+ %       simulation_coh_func_norandomness(sim_dir,label_names,all_label,all_label1,all_label2,label1,noiseLevelr,specific_tag,SNR,labeldir_tag, issptial_var)
         
         %% statistics
         
-    %    tag='0_0_0_0_nr_1_snr_0.05_templ_tempr_3sub_norand_15to20f_8subj_stg9parts';
-     %   FREQ=round(logspace(0.79,1.7,20));
-        nperm=200;
-     %   fs = 600;
-        TAG{1}='0_0_0_0_nr_1_snr_0.1_templ_tempr_3sub_norand_15to20f_8subj_stg9parts';
-        TAG{2}='0_0_0_0_nr_1_snr_0.1_templ_tempr_3sub_norand_15to20f_8subj_stg9parts';
+  %      do_sim_stats(sim_dir,all_label1,all_label2,X,noiseLevelr,specific_tag,flagrest,SNR)
         
-        stats=  do_sim_stats_clustercompar(sim_dir,TAG,label_names,FREQ,nperm,fs);
+        compare_avg_coh(sim_dir,all_label1,all_label2,noiseLevelr,specific_tag,SNR)
         
+        temporal1={['t',all_label1{1}(1:end-11),all_label1{1}(end-8:end)]};
+        temporal2={['t',all_label2{1}(1:end-11),all_label2{1}(end-8:end)]};
         
+    %    do_sim_stats_avgcoh(sim_dir,temporal1,temporal2,X,noiseLevelr,specific_tag,flagrest,SNR)
         
-        %   cluster_coh_eval(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR)
+        do_sim_plot_avgcoh(sim_dir,temporal1,temporal2,X,noiseLevelr,specific_tag,flagrest,SNR,sim_doc)
         
         
+                 cluster_coh_eval(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR)
+        
+        %[h, crit_p, adj_ci_cvrg, adj_p]= cluster_coh_fdr(all_label1,all_label2,X,sim_dir,noiseLevelr,specific_tag,sim_doc,flagrest,SNR,rate)
         
         
         

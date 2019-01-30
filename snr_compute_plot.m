@@ -2,8 +2,8 @@ clear all
 clc
 close all
 
-%snr=[ 0.06 .05 .04 0.03];
-snr=[0.1];
+ snr=[0.07 0.06 .05 ];
+ %snr=[0.1];.04 0.03
 
 sim_dir='/autofs/cluster/transcend/fahimeh/fmm/resources/Simulations2/labelsize_var/';
 sim_doc='/autofs/cluster/transcend/fahimeh/fmm/doc/method_paper/Simulation/Simulation2/SNR_var/';
@@ -16,7 +16,7 @@ noiseLevelr=1;
 
 
 parts=[5 7 9 11 13];
-subs=[1 2 3 4 5];
+subs=[1 2 3 3 4];
 S={'blue','red','green','cyan'};
 
 for iparts=3:3
@@ -24,7 +24,7 @@ for iparts=3:3
     sub_num=subs(iparts);
     P=parts(iparts);
     
-    specific_tag=['templ_tempr_' num2str(sub_num) 'sub_norand_15to20f_8subj_stg' num2str(P) 'parts'];
+    specific_tag=['templ_tempr_per3_' num2str(sub_num) 'sub_norand_15to20f_8subj_stg' num2str(P) 'parts'];
     
     
     for isnr=1:length(snr)
@@ -69,7 +69,7 @@ for iparts=3:3
         xlim([0 0.6])
          ylim([-1*1e-13 6*1e-13])
 %         
-         Sn(isnr)=round(mean(snr_subj(:,isnr))*10)./10;
+         Sn(iparts,isnr)=round(median(snr_subj(:,isnr))*10)./10;
 %         
 %         title(['SNR = ' num2str(Sn) ' dB'])
 %         set(gca,'FontSize',10)
